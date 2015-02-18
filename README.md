@@ -1,6 +1,60 @@
 Django 1.6 on OpenShift
 =======================
 
+En primer lugar decir qué es Openshift:
+“OpenShift es un producto de computación en la nube de plataforma como servicio de Red Hat.
+Este software funciona como un servicio que es de código abierto bajo el nombre de “OpenShift Origin”, y está disponible en GitHub.
+Los desarrolladores pueden usar Git para desplegar sus aplicaciones Web en los diferentes lenguajes de la plataforma.
+OpenShift también soporta programas binarios que sean aplicaciones Web, con tal de que se puedan ejecutar en RHEL Linux. Esto permite el uso de lenguajes arbitrarios y frameworks.
+OpenShift se encarga de mantener los servicios subyacentes a la aplicación y la escalabilidad de la aplicación como se necesite.” wikipedia
+
+
+A continuación, se exponen los pasos a seguir para utilizar Django Rest Framework en Openshift
+
+1/ Instalar las OpenShift Client Tools (rhc).
+
+Algún comando de interes que podrá ser útil en el futuro:
+– Para configurarlo se debe ejecutar: rhc setup. Nos pedirá login y password de openshift y nos permite crear una clave pública para luego conectar por ssh.
+– Conectar ssh a tu aplicación: rhc ssh < app-name>
+– Una vez conectado podríamos reiniciar la aplicación con: ctl_app restart
+– Hacer log de la aplicación: rhc tail -a < app-name>
+
+
+
+2/ Crear una aplicación Django que corra con python 2.7. Una de las formas de hacerlo es mediante el comando:
+
+rhc create-app < app-name> python-2.7 --from-code 
+               git://github.com/rancavil/django-openshift-quickstart.git
+               
+               
+Si todo va correctamente en la consola te saldrá algo similar a esto:
+URL: http://< app-name>-< usuario-openshift>.rhcloud.com/
+SSH to: abcabcabcabcabcabc@< app-name>-< usuario-openshift>.rhcloud.com
+Git remote: ssh://547b176b5973ca04c6000139@< app-name>-< usuario-openshift>.rhcloud.com/~/git/< app-name>.git/
+Cloned to: C:/prueba/< app-name>
+
+< app-name> = nombre deseado para tu aplicación.
+< usuario-openshift> = tu usuario en openshift
+
+Como nota decir, que me ha creado una copia de la aplicación creada en C:/prueba/. Esto es porque he ejecutado el create desde dentro del directorio c:/prueba/
+
+
+
+3/ Instalar un cliente GIT. En mi caso, para windows utilicé Git Bash. Luego los cambios se subirán así:
+
+?
+1
+2
+3
+git add .
+git commit -m 'My changes'
+git push
+
+
+??????????????????????????????????????????????
+==============================================
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 This git repository helps you get up and running quickly w/ a Django 1.6
 installation on OpenShift.  The Django project name used in this repo
 is 'openshift' but you can feel free to change it.  Right now the
